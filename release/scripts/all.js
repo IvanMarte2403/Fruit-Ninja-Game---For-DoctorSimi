@@ -70,7 +70,6 @@ define("scripts/collide.js", function(exports){
 			return [ (-1 * b + Math.sqrt(delta)) / (2 * a),  (-1 * b - Math.sqrt(delta)) / (2 * a) ];
 	}
 	
-	// 返回线段和椭圆的两个交点，如果不相交，返回 null
 	function lineXEllipse( p1, p2, c, r, e ){
 		// 线段：p1, p2    圆心：c    半径：r    离心率：e
 		if (r <= 0) return;
@@ -102,7 +101,6 @@ define("scripts/collide.js", function(exports){
 		return result;
 	}
 	
-	// 判断计算线段和椭圆是否相交
 	function lineInEllipse( p1, p2, c, r, e ){
 		var t = lineXEllipse( p1, p2, c, r, e );
 		return t && ( t[0] || t[1] );
@@ -275,11 +273,7 @@ define("scripts/game.js", function(exports){
 	    fruits.invoke( "pause" );
 	};
 	
-	// message.addEventListener("fruit.fallOff", function( fruit ){
-	// 	var index;
-	// 	if( ( index = fruits.indexOf( fruit ) ) > -1 )
-	// 	    fruits.splice( index, 1 );
-	// });
+
 	
 	message.addEventListener("fruit.remove", function( fruit ){
 	    var index;
@@ -423,12 +417,12 @@ define("scripts/main.js", function(exports){
 	
 	    [ timeline, sence, control ].invoke( "init" );
 	
-	    log( "正在加载鼠标控制脚本" );
-	    log( "正在加载图像资源" );
-		log( "正在加载游戏脚本" );
-	    log( "正在加载剧情" );
-	    log( "正在初始化" );
-		log( "正在启动游戏..." );
+	    log( "Cargando espada de corte " );
+	    log( "Cargando ingredientes" );
+		log( "Chefs cocinando" );
+	    log( "Dr.Simi en camino" );
+	    log( "Inicializando" );
+		log( "iniciando el juego..." );
 	    log.clear();
 	
 	    setTimeout( sence.switchSence.saturate( sence, "home-menu" ), 3000 );
@@ -469,17 +463,16 @@ define("scripts/main.js", function(exports){
 	});
 	
 	var tip = "";
-	
-	if( !Ucren.isChrome )
-	    tip = "$为了获得最佳流畅度，推荐您使用 <span class='b'>Google Chrome</span> 体验本游戏";
-	
-	if( !buzz.isSupported() )
-	    tip = tip.replace( "$", "您的浏览器不支持 &lt;audio&gt 播放声效，且" );
-	
-	tip = tip.replace( "$", "" );
-	
-	Ucren.Element( "browser" ).html( tip );;
-
+		
+		if( !Ucren.isChrome )
+			tip = "Para una experiencia óptima, se recomienda usar <span class='b'>Google Chrome</span> para jugar este juego";
+		
+		if( !buzz.isSupported() )
+			tip = tip.replace( "Para", "Tu navegador no soporta la reproducción de sonidos con &lt;audio&gt;, y para" );
+		
+		tip = tip.replace( "Para", "" );
+		
+		Ucren.Element( "browser" ).html( tip );
 	return exports;
 });
 
@@ -4337,7 +4330,7 @@ define("scripts/object/flash.js", function(exports){
 
 	return exports;
 });
-
+	
 
 /**
  * @source D:\hosting\demos\fruit-ninja\output\scripts\object\fps.js
@@ -4588,7 +4581,7 @@ define("scripts/object/light.js", function(exports){
 		indexs[i] = i;
 	
 	exports.start = function( boom ){
-		var x = boom.originX, y = boom.originY, time = 0, idx = indexs.random();
+		var x = boom.ori1nX, y = boom.originY, time = 0, idx = indexs.random();
 	
 		var i = lightsNum, b = function(){
 		    build( x, y, idx[ this ] );
@@ -4981,7 +4974,7 @@ define("scripts/object/score.js", function(exports){
 	exports.set = function(){
 	    image = layer.createImage( "default", "images/score.png", imageSx, 8, 29, 31 ).hide();
 	    text1 = layer.createText( "default", "0", text1Sx, 24, "90-#fc7f0c-#ffec53", "30px" ).hide();
-	    text2 = layer.createText( "default", "BEST 999", text2Sx, 48, "#af7c05", "14px" ).hide();
+	    text2 = layer.createText( "default", "Mejor 999", text2Sx, 48, "#af7c05", "14px" ).hide();
 	};
 	
 	exports.show = function( start ){
