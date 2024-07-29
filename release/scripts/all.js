@@ -451,12 +451,14 @@ define("scripts/main.js", function(exports){
 	        fruit.broken( angle );
 	        if( fruit.isHomeMenu )
 	            switch( 1 ){
-	                case fruit.isDojoIcon:
-	                    sence.switchSence( "dojo-body" ); break;
+	                // case fruit.isDojoIcon:
+	                //     sence.switchSence( "dojo-body" ); break; // case fruit.isDojoIcon:
+	                //     sence.switchSence( "dojo-body" ); break;
 	                case fruit.isNewGameIcon:
 	                    sence.switchSence( "game-body" ); break;
-	                case fruit.isQuitIcon:
-	                    sence.switchSence( "quit-body" ); break;
+					// changes: Oculto reacciones del menú y borro la imagen para dejar unicamente el indicador
+	                // case fruit.isQuitIcon:
+	                //     sence.switchSence( "quit-body" ); break;
 	            }
 	        return ;
 	    }
@@ -618,6 +620,7 @@ define("scripts/sence.js", function(exports){
 	    else if( curSence.is( "quit-body" ) ) this.hideQuit( onHide );
 	};
 	
+	
 	// to enter home page menu
 	exports.showMenu = function( callback ){
 	    var callee = arguments.callee;
@@ -627,7 +630,8 @@ define("scripts/sence.js", function(exports){
 	    sandia = fruit.create( "sandia", 330, 322, true );
 	    boom = fruit.create( "boom", 552, 367, true, 2500 );
 	
-	    [ peach, sandia, boom ].forEach(function( f ){ f.isHomeMenu = 1; });
+		//[peach, sandie, boom]
+	    [ sandia].forEach(function( f ){ f.isHomeMenu = 1; });
 	    peach.isDojoIcon = sandia.isNewGameIcon = boom.isQuitIcon = 1;
 	
 	    var group = [
@@ -643,9 +647,9 @@ define("scripts/sence.js", function(exports){
 	        
 	        [ newSign, 2000 ],
 	
-	        [ peach, 2000 ],
-	        [ sandia, 2000 ],
-	        [ boom, 2000 ]
+	        // [ peach, 2000 ],
+	        [ sandia, 2000 ]
+	        // [ boom, 2000 ]
 	    ];
 	
 	    group.invoke( "show" );
@@ -2619,10 +2623,7 @@ define("scripts/lib/buzz.js", function(exports){
  */ 
 define("scripts/lib/raphael.js", function(exports){
 	/*
-	 * Raphael 1.5.2 - JavaScript Vector Library
-	 *
-	 * Copyright (c) 2010 Dmitry Baranovskiy (http://raphaeljs.com)
-	 * Licensed under the MIT (http://raphaeljs.com/license.html) license.
+	
 	 */
 	
 	var Raphael;
@@ -4939,7 +4940,8 @@ define("scripts/object/quit.js", function(exports){
 	var rotate = require("scripts/factory/rotate");
 	var tween = require("scripts/lib/tween");
 	
-	exports = rotate.create("images/quit.png", 493, 311, 141, 141, 1e-5, tween.exponential.co, 500);;
+	// Se coloco 0 0 para no mostrarlo, aumentar el tamaño para activarlo
+	exports = rotate.create("images/quit.png", 493, 311, 0, 0, 1e-5, tween.exponential.co, 500);;
 
 	return exports;
 });
