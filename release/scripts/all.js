@@ -593,6 +593,7 @@ define("scripts/sence.js", function(exports){
 	exports.init = function(){
 	    menuSnd = sound.create( "sound/menu" );
 	    gameStartSnd = sound.create( "sound/start" );
+		// ivanMarte: prueba-1
 		[ background, homeMask, logo, info, ninja, homeDesc, dojo, newSign, newGame, quit, score, lose, developing, gameOver, flash /*, fps */ ].invoke( "set" );
 	    // setInterval( fps.update.bind( fps ), 500 );
 	};
