@@ -651,6 +651,7 @@ define("scripts/sence.js", function(exports){
 	    peach = fruit.create( "peach", 137, 333, true );
 		sandia = fruit.create("sandia", centerX+40, centerY+40, true);
 		boom = info;
+		boom = fruit.create( "boom", 552, 367, true, 2500 );
 
 	
 
