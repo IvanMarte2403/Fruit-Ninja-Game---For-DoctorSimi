@@ -1249,6 +1249,7 @@ define("scripts/factory/fruit.js", function(exports){
 	
 	var dropTime = 1200, dropXScope = 200, shadowPos = 50;
 	
+
 	var infos = {
 		// type: [ imageSrc, width, height, radius, fixAngle, isReverse, juiceColor ]
 		boom: [ "images/fruit/boom.png", 66, 68, 26, 0, 0, null ],
@@ -4392,15 +4393,16 @@ define("scripts/object/game-over.js", function(exports){
 	var exponential = tween.exponential.co;
 	
 	/**
-	 * "game-over"模块
-	 */
+		Módulo de Game Over 
+	*/
+
 	
 	exports.anims = [];
 	
+	// ivanMarte = Cambios de imagen de game-over.png
 	exports.set = function(){
 		// Dimensiones de la imagen
-		var imageWidth = 490;
-		var imageHeight = 85;
+		var imageWidth = 490;		var imageHeight = 85;
 
 		var centerX = (containerWidth - imageWidth) / 2;
 		var centerY = (containerHeight - imageHeight) / 2;
@@ -4423,8 +4425,7 @@ define("scripts/object/game-over.js", function(exports){
 		});
 	};
 	
-	// 显示/隐藏 相关
-	
+// Mostrar/Ocultar relacionado	
 	exports.onZoomStart = function( sz, ez, mode ){
 		if( mode == "show" )
 			this.image.show();
@@ -5054,7 +5055,7 @@ define("scripts/object/score.js", function(exports){
 	var message = require("scripts/message");
 	
 	/**
-	 * 分数模块
+	 * Módulo de puntuación  	
 	 */
 	
 	var image, text1, text2, animLength = 500;;
