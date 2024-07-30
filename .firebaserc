@@ -1,5 +1,16 @@
 {
   "projects": {
     "default": "simijuegos-game3"
-  }
+  } ,
+  "targets": {
+    "fir-bd78e": {
+      "hosting": {
+        "game3": [
+          "simijuegos-game3"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

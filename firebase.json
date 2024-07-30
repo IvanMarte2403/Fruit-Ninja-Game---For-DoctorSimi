@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "game3",
     "public": "release",
     "ignore": [
       "firebase.json",
