@@ -1,4 +1,12 @@
 (function () {
+    var Raphael;
+    window.onload = function() {
+      var container = document.getElementById('raphael-container');
+      var paper = Raphael(container, container.clientWidth, container.clientHeight);
+      window.onresize = function() {
+        paper.setSize(container.clientWidth, container.clientHeight);
+      };
+    }
     function a() {
         if (a.is(arguments[0], G)) {
             var b = arguments[0],

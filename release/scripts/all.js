@@ -3,7 +3,7 @@
  * @date Fri, 20 Jul 2012 16:21:18 UTC
  * @author dron
  */
-
+// ivanMarte = variables creadas para hacer responsive el juego
 var containerWidth = window.innerWidth;
 var containerHeight = window.innerHeight;
 
@@ -560,7 +560,9 @@ define("scripts/sence.js", function(exports){
 	var logo = require("scripts/object/logo");
 	var ninja = require("scripts/object/ninja")
 	var homeDesc = require("scripts/object/home-desc");
-	
+	// ivanMarte = agrego una nueva imagen de informacion de la rosca de reyes
+	var info = require("scripts/object/info");
+
 	var dojo = require("scripts/object/dojo");
 	var newGame = require("scripts/object/new-game");
 	var quit = require("scripts/object/quit");
@@ -591,7 +593,7 @@ define("scripts/sence.js", function(exports){
 	exports.init = function(){
 	    menuSnd = sound.create( "sound/menu" );
 	    gameStartSnd = sound.create( "sound/start" );
-		[ background, homeMask, logo, ninja, homeDesc, dojo, newSign, newGame, quit, score, lose, developing, gameOver, flash /*, fps */ ].invoke( "set" );
+		[ background, homeMask, logo, info, ninja, homeDesc, dojo, newSign, newGame, quit, score, lose, developing, gameOver, flash /*, fps */ ].invoke( "set" );
 	    // setInterval( fps.update.bind( fps ), 500 );
 	};
 	
@@ -636,18 +638,23 @@ define("scripts/sence.js", function(exports){
 	exports.showMenu = function( callback ){
 	    var callee = arguments.callee;
 	    var times = callee.times = ++ callee.times || 1;
-	
+		var info = require("scripts/object/info");
+		
 		var sandiaWidth = 98; 
 		var sandiaHeight = 85; 
-
+		var displacement = require("scripts/factory/displacement");
+		var tween = require("scripts/lib/tween")
 		// Calcula las coordenadas para centrar la imagen de sandia
 		var centerX = (containerWidth - sandiaWidth) / 2;
 		var centerY = (containerHeight - sandiaHeight) / 2;
 	    peach = fruit.create( "peach", 137, 333, true );
-		sandia = fruit.create("sandia", centerX+40, centerY+40, true);	    boom = fruit.create( "boom", 552, 367, true, 2500 );
+		sandia = fruit.create("sandia", centerX+40, centerY+40, true);
+		boom = info;
+
 	
+
 		//[peach, sandie, boom]
-	    [ sandia].forEach(function( f ){ f.isHomeMenu = 1; });
+	    [sandia, boom].forEach(function( f ){ f.isHomeMenu = 1; });
 	    peach.isDojoIcon = sandia.isNewGameIcon = boom.isQuitIcon = 1;
 	
 	    var group = [
@@ -656,7 +663,7 @@ define("scripts/sence.js", function(exports){
 	
 	    	[ ninja, 500 ], 
 	    	[ homeDesc, 1500, ], 
-	
+			[ info, 2000 ],
 	    	[ dojo, 2000 ], 
 	    	[ newGame, 2000 ], 
 	    	[ quit, 2000 ],
@@ -678,7 +685,7 @@ define("scripts/sence.js", function(exports){
 	// to exit home page menu
 	exports.hideMenu = function( callback ){
 	    [ newSign, dojo, newGame, quit ].invoke( "hide" );
-	    [ homeMask, logo, ninja, homeDesc ].invoke( "hide" );
+	    [ homeMask, logo, ninja, info, homeDesc ].invoke( "hide" );
 	    [ peach, sandia, boom ].invoke( "fallOff", 150 );
 	
 	    menuSnd.stop();
@@ -1139,7 +1146,7 @@ define("scripts/tools.js", function(exports){
 /**
  * @source D:\hosting\demos\fruit-ninja\output\scripts\factory\displacement.js
  */ 
-define("scripts/factory/displacement.js", function(exports){
+	define("scripts/factory/displacement.js", function(exports){
 	var layer = require("scripts/layer");
 	var timeline = require("scripts/timeline");
 	var tween = require("scripts/lib/tween");
@@ -4436,15 +4443,21 @@ define("scripts/object/game-over.js", function(exports){
 });
 
 
+// ivanMarte = container dependiendo del contenedor
+
 /**
  * @source D:\hosting\demos\fruit-ninja\output\scripts\object\home-desc.js
  */ 
 define("scripts/object/home-desc.js", function(exports){
 	var displacement = require("scripts/factory/displacement");
 	var tween = require("scripts/lib/tween");
-	
-	exports = displacement.create("images/home-desc.png", 161, 91, -161, 140, 7, 127, tween.exponential.co, 500);;
-	// exports.newImange = displacement.create("images/home-desc.png", 161, 91, 10, 10, 7, 127, tween.exponential.co, 500);;
+	var startX = containerWidth * -0.1; // No veo efecto de cambio, en valores bajos desaparece
+	var startY = containerHeight * 0.35; // Cambio de la imagen
+	var endX = containerWidth * -0.40; // parece ser el antes 
+	var endY = containerHeight * 0.9; // 15% de containerHeight
+
+	// el 150 es el que hace el cambio de height
+	exports = displacement.create("images/home-desc.png", startX, startY, endX, endY, 20, 180, tween.exponential.co, 500);;
 	return exports;
 });
 
@@ -4686,6 +4699,7 @@ define("scripts/object/light.js", function(exports){
 	return exports;
 });
 
+// ivanMarte: Diseño adaptable de los logos
 
 /**
  * @source D:\hosting\demos\fruit-ninja\output\scripts\object\logo.js
@@ -4693,8 +4707,15 @@ define("scripts/object/light.js", function(exports){
 define("scripts/object/logo.js", function(exports){
 	var displacement = require("scripts/factory/displacement");
 	var tween = require("scripts/lib/tween");
-	
-	exports = displacement.create("images/logo.png", 288, 135, 17, -182, 17, 1, tween.exponential.co, 1e3);;
+
+
+	var startX = containerWidth * 0.36; // 36% de containerWidth
+	var startY = containerHeight * 0.25; // 22.5% de containerHeight
+	var endX = containerWidth * 0.6; // 2.125% de containerWidth
+	var endY = containerHeight * -0.5; // -30.33% de containerHeight
+
+
+	exports = displacement.create("images/logo.png", startX, startY, endX, endY, 17, 1, tween.exponential.co, 1e3);;
 
 	return exports;
 });
@@ -4964,8 +4985,7 @@ define("scripts/object/new.js", function(exports){
 	    this.jump();
 	};
 	
-	// 跳跃相关
-	
+// Relacionado con el salto	
 	exports.onJumping = function(time){
 		var t = parseInt(time / cycleTime);
 	
@@ -4988,7 +5008,13 @@ define("scripts/object/ninja.js", function(exports){
 	var displacement = require("scripts/factory/displacement");
 	var tween = require("scripts/lib/tween");
 	
-	exports = displacement.create("images/ninja.png", 244, 81, 315, -140, 315, 43, {
+	var startX = containerWidth * 0.305; // 30.5% de containerWidth
+	var startY = containerHeight * 0.135; // 13.5% de containerHeight
+	var endX = containerWidth * 0.39375; // 39.375% de containerWidth
+	var endY = containerHeight * -0.5; // -23.33% de containerHeight
+
+	var positionX = containerWidth * 0.37;
+	exports = displacement.create("images/ninja.png", startX, startY, endX, endY, positionX, 43, {
 		show: tween.bounce.co,
 		hide: tween.exponential.co
 	}, 1e3);;
@@ -5087,6 +5113,24 @@ define("scripts/object/score.js", function(exports){
 	        text1.attr( "text", 0 );
 	};;
 
+	return exports;
+});
+
+
+// ivanMarte = Creación de la fotografía de referencia del record Guiness
+
+define("scripts/object/info.js", function(exports){
+	var displacement = require("scripts/factory/displacement");
+	var tween = require("scripts/lib/tween");
+	var startX = containerWidth * -0.2; // No veo efecto de cambio, en valores bajos desaparece
+	var startY = containerHeight * 0.8; // Cambio de la imagen
+	var endX = containerWidth * -0.5; // parece ser el antes 
+	var endY = containerHeight * 0.65; // 15% de containerHeight
+
+	positionX = containerWidth * 0.68;
+	positionY = containerHeight * 0.1;
+	// el 150 es el que hace el cambio de height
+	exports = displacement.create("images/info.png", startX, startY, endX, endY, positionX, positionY, tween.exponential.co, 500);;
 	return exports;
 });
 
