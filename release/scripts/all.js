@@ -226,9 +226,11 @@ define("scripts/game.js", function(exports){
 	var barbette = function(){
 	    if( fruits.length >= volleyNum )
 	        return ;
-	
-	    var startX = random( 640 ), endX = random( 640 ), startY = 600;
-	    var f = fruit.create( startX, startY ).shotOut( 0, endX );
+		
+		xCreateFruit = random( containerWidth );
+
+	    var startX = random( containerHeight ), endX = random( containerWidth ), startY = 600;
+	    var f = fruit.create( xCreateFruit, containerHeight ).shotOut( 0, endX ); // Modifique esto para que las frutas salgan en diferente posición
 	
 	    fruits.push( f );
 	    snd.play();
@@ -660,6 +662,8 @@ define("scripts/sence.js", function(exports){
 		// Calcula las coordenadas para centrar la imagen de sandia
 		var centerX = (containerWidth - sandiaWidth) / 2;
 		var centerY = (containerHeight - sandiaHeight) / 2;
+
+		
 	    peach = fruit.create( "peach", 137, 333, true );
 		sandia = fruit.create("sandia", centerX+40, centerY+40, true);
 		boom = info;
@@ -1591,7 +1595,7 @@ define("scripts/factory/fruit.js", function(exports){
 	};
 	
 	exports.create = function( type, originX, originY, isHide, flameStart ){
-		if( typeof type == "number" ) // 缺省 type
+		if( typeof type == "number" ) // Tipo por defecto
 			isHide = originY,
 			originY = originX,
 		    originX = type,
@@ -4768,7 +4772,7 @@ var conf1 = {
 var conf2 = { 
     src: "images/xx.png", 
     sx: isMobile ? containerWidth - 20 : containerWidth - 40,  //Posición Inicial
-    ex: isMobile ? containerWidth * 0.85 : containerWidth * 0.80, //Posición Final
+    ex: isMobile ? containerWidth * 0.84 : containerWidth * 0.80, //Posición Final
     y: containerHeight * 0.03, // Posición en el eje y como porcentaje	
     w: isMobile ? containerWidth * 0.06 : containerWidth * 0.04, 
     h: isMobile ? containerWidth * 0.06 : containerWidth * 0.04 
@@ -4777,7 +4781,7 @@ var conf2 = {
 var conf3 = { 
     src: "images/xxx.png", 
     sx: isMobile ? containerWidth - 30 : containerWidth - 60, //Posición Inicial
-    ex: isMobile ? containerWidth * 0.80 : containerWidth  * 0.75, //Posición Final
+    ex: isMobile ? containerWidth * 0.77 : containerWidth  * 0.75, //Posición Final
     y: containerHeight * 0.03, // Posición en el eje y como porcentaje	
     w: isMobile ? containerWidth * 0.07 : containerWidth * 0.05, 
     h: isMobile ? containerWidth * 0.07 : containerWidth * 0.05 
