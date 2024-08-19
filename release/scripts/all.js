@@ -5140,7 +5140,9 @@ define("scripts/object/score.js", function(exports){
 	    setTimeout(function(){
 	        image.scale( 1, 1 );
 	    }, 60);
+		window.parent.postMessage( {number}, "*" );
 	    // message.postMessage( number, "score.change" );
+		console.log(number);
 	};
 	
 // Mostrar/Ocultar relacionado	
