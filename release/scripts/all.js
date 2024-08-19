@@ -3,10 +3,22 @@
  * @date Fri, 20 Jul 2012 16:21:18 UTC
  * @author dron
  */
+var isMobile = window.innerWidth < 768;
+
+
+
+// Escuchar el evento 'resize' del objeto window
+window.addEventListener('resize', function() {
+    // Recargar la página
+    location.reload();
+});
 // ivanMarte = variables creadas para hacer responsive el juego
 var containerWidth = window.innerWidth;
 var containerHeight = window.innerHeight;
-
+window.addEventListener('resize', function() {
+    containerWidth = window.innerWidth;
+    containerHeight = window.innerHeight;
+});
 
 void function(global){
 	var mapping = {}, cache = {};
@@ -1367,7 +1379,7 @@ define("scripts/factory/fruit.js", function(exports){
 		    this.flame.remove();
 	};
 	
-	// 分开
+// Separar	
 	ClassFruit.prototype.apart = function( angle ){
 		this.anims.clear();
 		this.image.hide();
@@ -3454,8 +3466,7 @@ define("scripts/lib/ucren.js", function(exports){
 	};
 	
 	//
-	// [底层操作类]
-	//
+// [Clase de operaciones de bajo nivel]	//
 	
 	// Ucren.BasicDrag
 	Ucren.BasicDrag = Ucren.Class( 
@@ -4173,7 +4184,7 @@ define("scripts/object/dojo.js", function(exports){
 define("scripts/object/flame.js", function(exports){
 	
 	/**
-	 * 火焰模块
+* Módulo de llamas
 	 * @author zswang, dron
 	 */
 	
@@ -4189,7 +4200,7 @@ define("scripts/object/flame.js", function(exports){
 		});
 	*/
 	
-	// 缩写
+// Abreviatura
 	var math = Math, cos = math.cos, sin = math.sin,
 		trunc = parseInt,
 		random = math.random,
@@ -4198,12 +4209,12 @@ define("scripts/object/flame.js", function(exports){
 	var guid = 0;
 	
 	/**
-	 * 添加一个火苗
-	 * @param{Array} center 中心位置 单位像素
-	 * @param{Number} angle 运动方向 单位幅度
-	 * @param{Number} length 运动长度 单位像素
-	 * @param{Number} life 存活时间 单位毫秒
-	 */
+ * Añadir una llama
+ * @param {Array} center Posición central en píxeles
+ * @param {Number} angle Dirección del movimiento en radianes
+ * @param {Number} length Longitud del movimiento en píxeles
+ * @param {Number} life Tiempo de vida en milisegundos
+ */
 	function appendFlame( center, angle, length, life, flames ){
 		return flames[guid] = {
 			id: guid ++,
@@ -4497,8 +4508,7 @@ define("scripts/object/knife.js", function(exports){
 	var Ucren = require("scripts/lib/ucren");
 	
 	/**
-	 * 刀光模块
-	 */
+* Módulo de destello de cuchillo	 */
 	
 	var lastX = null, lastY = null;
 	var abs = Math.abs;
@@ -4605,8 +4615,9 @@ define("scripts/object/knife.js", function(exports){
  */ 
 define("scripts/object/light.js", function(exports){
 	/**
-	 * 炸弹爆炸时的光线
-	 */
+	 * 
+	 * 
+* Luz emitida durante la explosión de la bomba	 */
 	
 	var layer = require("scripts/layer");
 	
@@ -4743,33 +4754,33 @@ define("scripts/object/lose.js", function(exports){
 	
 	var o1, o2, o3, animLength = 500;
 	
-	// ivanMarte: Ajusta las coordenadas para que las imágenes estén en el lado superior derecho
-	var conf1 = { 
-		src: "images/x.png", 
-		sx: containerWidth - 10, 
-		ex: containerWidth - 50, 
-		y: 5, 
-		w: containerWidth * 0.02, 
-		h: containerWidth * 0.02 
-	};
-	
-	var conf2 = { 
-		src: "images/xx.png", 
-		sx: containerWidth - 20, 
-		ex: containerWidth - 70, 
-		y: 5, 
-		w: containerWidth * 0.03, 
-		h: containerWidth * 0.03 
-	};
-	
-	var conf3 = { 
-		src: "images/xxx.png", 
-		sx: containerWidth - 60, 
-		ex: containerWidth - 100, 
-		y: 6, 
-		w: containerWidth * 0.04, 
-		h: containerWidth * 0.04 
-	};
+// Configuración para dispositivos no móviles
+var conf1 = { 
+    src: "images/x.png", 
+    sx: isMobile ? containerWidth - 50 : containerWidth - 100, 
+    ex: isMobile ? containerWidth * 0.90 : containerWidth * 0.85, // Posición Final como porcentaje
+    y: containerHeight * 0.03, // Posición en el eje y como porcentaje	
+    w: isMobile ? containerWidth * 0.05 : containerWidth * 0.03, 
+    h: isMobile ? containerWidth * 0.05 : containerWidth * 0.03 
+};
+
+var conf2 = { 
+    src: "images/xx.png", 
+    sx: isMobile ? containerWidth - 20 : containerWidth - 40,  //Posición Inicial
+    ex: isMobile ? containerWidth * 0.85 : containerWidth * 0.80, //Posición Final
+    y: containerHeight * 0.03, // Posición en el eje y como porcentaje	
+    w: isMobile ? containerWidth * 0.06 : containerWidth * 0.04, 
+    h: isMobile ? containerWidth * 0.06 : containerWidth * 0.04 
+};
+
+var conf3 = { 
+    src: "images/xxx.png", 
+    sx: isMobile ? containerWidth - 30 : containerWidth - 60, //Posición Inicial
+    ex: isMobile ? containerWidth * 0.80 : containerWidth  * 0.75, //Posición Final
+    y: containerHeight * 0.03, // Posición en el eje y como porcentaje	
+    w: isMobile ? containerWidth * 0.07 : containerWidth * 0.05, 
+    h: isMobile ? containerWidth * 0.07 : containerWidth * 0.05 
+};
 	var number = 0;
 	
 	exports.anims = [];
@@ -4906,9 +4917,14 @@ define("scripts/object/new-game.js", function(exports){
 	var rotate = require("scripts/factory/rotate");
 	var tween = require("scripts/lib/tween");
 	
-	// Dimensiones de la imagen
-	var imageWidth = 195;
-	var imageHeight = 195;
+	
+	// Porcentajes deseados para las dimensiones de la imagen
+	//Tiene que tener una diferencia de 
+	var imageWidthPercentage = 0.234; 
+	var imageHeightPercentage = 0.504; 
+	// Dimensiones de la imagen calculadas en función de los porcentajes
+	var imageWidth = containerWidth * imageWidthPercentage;
+	var imageHeight = containerHeight * imageHeightPercentage;
 
 	// Calcula las coordenadas para centrar la imagen
 	var centerX = (containerWidth - imageWidth) / 2;
@@ -5097,8 +5113,7 @@ define("scripts/object/score.js", function(exports){
 	    // message.postMessage( number, "score.change" );
 	};
 	
-	// 显示/隐藏 相关
-	
+// Mostrar/Ocultar relacionado	
 	exports.onTimeUpdate = function( time, mode, isx, iex, t1sx, t1ex, t2sx, t2ex ){
 	    image.attr( "x", anim( time, isx, iex - isx, animLength ) );
 	    text1.attr( "x", anim( time, t1sx, t1ex - t1sx, animLength ) );
