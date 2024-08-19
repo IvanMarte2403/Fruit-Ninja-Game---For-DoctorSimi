@@ -3,7 +3,7 @@
  * @date Fri, 20 Jul 2012 16:21:18 UTC
  * @author dron
  */
-var isMobile = window.innerWidth < 768;
+var isMobile = window.innerWidth < 990;
 
 
 
@@ -4619,98 +4619,99 @@ define("scripts/object/light.js", function(exports){
 	 * 
 * Luz emitida durante la explosión de la bomba	 */
 	
-	var layer = require("scripts/layer");
-	
-	var maskLayer = layer.getLayer( "mask" );
-		layer = layer.getLayer( "light" );
-	
-	var Ucren = require("scripts/lib/ucren");
-	var timeline = require("scripts/timeline");
-	var message = require("scripts/message");
-	
-	var random = Ucren.randomNumber;
-	var pi = Math.PI;
-	var sin = Math.sin;
-	var cos = Math.cos;
-	
-	var lights = [];
-	var indexs = [];
-	var lightsNum = 10;
-	
-	for(var i = 0; i < lightsNum; i ++)
-		indexs[i] = i;
-	
-	exports.start = function( boom ){
-		var x = boom.ori1nX, y = boom.originY, time = 0, idx = indexs.random();
-	
-		var i = lightsNum, b = function(){
-		    build( x, y, idx[ this ] );
-		};
-	
-		while( i -- )
-			timeline.setTimeout( b.bind( i ), time += 100 );
-	
-		timeline.setTimeout(function(){
-		    this.overWhiteLight();
-		}.bind( this ), time + 100);
-	};
-	
-	exports.overWhiteLight = function(){
-	    message.postMessage( "overWhiteLight.show" );
-	    this.removeLights();
-	
-	    var dur = 4e3;
-	    var mask = maskLayer.rect( 0, 0, 640, 480 ).attr({ fill: "#fff", stroke: "none" });
-	    var control = {
-	    	onTimeUpdate: function( time ){
-	    		mask.attr( "opacity", 1 - time / dur );
-	    	},
-	
-	    	onTimeEnd: function(){
-	    	    mask.remove();
-	    	    message.postMessage( "game.over" );
-	    	}
-	    };
-	
-	    timeline.createTask({
-			start: 0, duration: dur,
-			object: control, onTimeUpdate: control.onTimeUpdate, onTimeEnd: control.onTimeEnd
-		});
-	
-	};
-	
-	exports.removeLights = function(){
-	    for(var i = 0, l = lights.length; i < l; i ++)
-	    	lights[i].remove();
-	    lights.length = 0;
-	};
-	
-	
-	
-	function build( x, y, r ){
-	    var a1, a2, x1, y1, x2, y2;
-	    
-	    a1 = r * 36 + random( 10 );
-	    a2 = a1 + 5;
-	
-	    a1 = pi * a1 / 180;
-	    a2 = pi * a2 / 180;
-	    
-	    x1 = x + 640 * cos( a1 );
-	    y1 = y + 640 * sin( a1 );
-	
-	    x2 = x + 640 * cos( a2 );
-	    y2 = y + 640 * sin( a2 );
-	
-	    var light = layer.path( [ "M", x, y, "L", x1, y1, "L", x2, y2, "Z" ] ).attr({
-	    	stroke: "none",
-	    	fill: "#fff"
-	    });
-	
-	    lights.push( light );
-	};
+    
+var layer = require("scripts/layer");
 
-	return exports;
+var maskLayer = layer.getLayer("mask");
+layer = layer.getLayer("light");
+
+var Ucren = require("scripts/lib/ucren");
+var timeline = require("scripts/timeline");
+var message = require("scripts/message");
+
+var random = Ucren.randomNumber;
+var pi = Math.PI;
+var sin = Math.sin;
+var cos = Math.cos;
+
+var lights = [];
+var indexs = [];
+var lightsNum = 10;
+
+for (var i = 0; i < lightsNum; i++)
+    indexs[i] = i;
+
+exports.start = function (boom) {
+    var x = boom.originX, y = boom.originY, time = 0, idx = indexs.random();
+
+    var i = lightsNum, b = function () {
+        build(x, y, idx[this]);
+    };
+
+    while (i--)
+        timeline.setTimeout(b.bind(i), time += 100);
+
+    timeline.setTimeout(function () {
+        this.overWhiteLight();
+    }.bind(this), time + 100);
+};
+
+exports.overWhiteLight = function () {
+    message.postMessage("overWhiteLight.show");
+    this.removeLights();
+
+    var dur = 4e3;
+    var mask = maskLayer.rect(0, 0, window.innerWidth, window.innerHeight).attr({ fill: "#fff", stroke: "none" });
+    var control = {
+        onTimeUpdate: function (time) {
+            mask.attr("opacity", 1 - time / dur);
+        },
+
+        onTimeEnd: function () {
+            mask.remove();
+            message.postMessage("game.over");
+        }
+    };
+
+    timeline.createTask({
+        start: 0, duration: dur,
+        object: control, onTimeUpdate: control.onTimeUpdate, onTimeEnd: control.onTimeEnd
+    });
+
+};
+
+exports.removeLights = function () {
+    for (var i = 0, l = lights.length; i < l; i++)
+        lights[i].remove();
+    lights.length = 0;
+};
+
+function build(x, y, r) {
+    var a1, a2, x1, y1, x2, y2;
+
+    a1 = r * 36 + random(10);
+    a2 = a1 + 5;
+
+    a1 = pi * a1 / 180;
+    a2 = pi * a2 / 180;
+
+    var radius = Math.max(window.innerWidth, window.innerHeight); // Ajustar el radio según el tamaño de la ventana
+
+    x1 = x + radius * cos(a1);
+    y1 = y + radius * sin(a1);
+
+    x2 = x + radius * cos(a2);
+    y2 = y + radius * sin(a2);
+
+    var light = layer.path(["M", x, y, "L", x1, y1, "L", x2, y2, "Z"]).attr({
+        stroke: "none",
+        fill: "#fff"
+    });
+
+    lights.push(light);
+};
+
+return exports;
 });
 
 // ivanMarte: Diseño adaptable de los logos
@@ -5073,19 +5074,44 @@ define("scripts/object/score.js", function(exports){
 	/**
 	 * Módulo de puntuación  	
 	 */
+
+	// Posición x 
+	var imageScoreSxPorcentaje = isMobile ? 0.04 : 0.06; // 4% si es móvil, 3.5% si no
+	var scoreFontSizeSxPorcentaje = isMobile ? 0.088 : 0.11; // 5.5% si es móvil, 3% si no
 	
 	var image, text1, text2, animLength = 500;;
 	
-	var imageSx = -94, imageEx = 6;
-	var text1Sx = -59, text1Ex = 41;
-	var text2Sx = -93, text2Ex = 7;
+	var imageSx = containerWidth * -0.1, imageEx = containerWidth * imageScoreSxPorcentaje; // 10% a la izquierda y 6% a la derecha del ancho del contenedor
+	var text1Sx = containerWidth * 0.1, text1Ex = containerWidth *	scoreFontSizeSxPorcentaje; // 6% a la izquierda y 41% a la derecha del ancho del contenedor
+	var text2Sx = containerWidth * -0.1, text2Ex = containerWidth * 0.07; // 10% a la izquierda y 7% a la derecha del ancho del contenedor
 	
+	// Posición Y 
+	
+	var imageScoreSyPorcentaje; isMobile? 0.40 : 0.02;
+	var scoreFontSyPorcentaje = isMobile? 0.06 : 0.05;
+
+    var imageSy = containerHeight * imageScoreSyPorcentaje, imageEy = containerHeight * imageScoreSyPorcentaje; 
+    var text1Sy = containerHeight * scoreFontSyPorcentaje, text1Ey = containerHeight * -0.2; 
+    var text2Sy = containerHeight * 0.05, text2Ey = containerHeight * 0.06; 
+
+	// Tamaño de fuente y ancho de imagen
+		
+	var imageWidthPercentage = isMobile ? 0.04 : 0.035; // 20% si es móvil, 10% si no
+	var scoreFontSizePercentage = isMobile ? 0.055 : 0.03; // 6% si es móvil, 3% si no
+	
+	var text1FontSize = containerWidth * scoreFontSizePercentage + "px"; // Tamaño de fuente basado en el porcentaje fijo
+	var text2FontSize = containerWidth * 0.0+ "px"; // 2% del ancho del contenedor
+	var imageWidthScore = containerWidth * imageWidthPercentage; // Ancho de la imagen basado en el porcentaje fijo
+	var imageHeightScore = imageWidthScore * (31/29); // Mantener la proporción original de la imagen
 	exports.anims = [];
 	
+
+
+
 	exports.set = function(){
-	    image = layer.createImage( "default", "images/score.png", imageSx, 8, 29, 31 ).hide();
-	    text1 = layer.createText( "default", "0", text1Sx, 24, "90-#fc7f0c-#ffec53", "30px" ).hide();
-	    text2 = layer.createText( "default", "Mejor 999", text2Sx, 48, "#af7c05", "14px" ).hide();
+		image = layer.createImage("default", "images/score.png", imageSx, imageSy, imageWidthScore, imageHeightScore).hide();
+	    text1 = layer.createText("default", "0", text1Sx, text1Sy, "90-#fc7f0c-#ffec53", text1FontSize).hide();
+		text2 = layer.createText("default", "Mejor 999", text2Sx, 48, "#af7c05", text2FontSize).hide();
 	};
 	
 	exports.show = function( start ){
